@@ -138,6 +138,10 @@ async function processLayout(
     })
   }
 
+  const exportFrontMatter = pluginOpts.exportFrontMatterAs ? (
+      `export const ${pluginOpts.exportFrontMatterAs} = ${stringifyObject(mergedFrontMatter)}`
+  ) : "";
+
   // Scan the layout for data fetching method exports if we are re-exporting
   const namedExports = []
   if (pluginOpts.reExportDataFetching) {
@@ -160,6 +164,8 @@ export default Layout
 ${namedExports.map((name) => `export const ${name} = _${name}`).join('\n')}
 
 export const frontMatter = ${stringifyObject(mergedFrontMatter)}
+
+${exportFrontMatter}
 
 ${content}
 `
